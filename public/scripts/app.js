@@ -4,54 +4,9 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
-var data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": {
-        "small":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-        "regular": "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-        "large":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-      },
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": {
-        "small":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_50.png",
-        "regular": "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc.png",
-        "large":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_200.png"
-      },
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  },
-  {
-    "user": {
-      "name": "Johann von Goethe",
-      "avatars": {
-        "small":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_50.png",
-        "regular": "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1.png",
-        "large":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_200.png"
-      },
-      "handle": "@johann49"
-    },
-    "content": {
-      "text": "Es ist nichts schrecklicher als eine tätige Unwissenheit."
-    },
-    "created_at": 1461113796368
-  }
-];
+$(document).ready(function(){
 
-const createTweetElement = function (tweetData) {
+  const createTweetElement = function (tweetData) {
   $tweet = $("<article>").addClass("tweet");
 
   const $header = $("<header>").addClass("tweet-header")
@@ -67,8 +22,8 @@ const createTweetElement = function (tweetData) {
   $tweet.append($tweetBody);
 
   $footer = $("<footer>").addClass("tweet-footer");
-  const tweetAge = Math.round((Date.now() - tweetData.created_at) / 1000 / 3600 / 24);
-  $footer.append($("<p>").addClass("tweet-age").html(tweetAge + ' days ago'));
+  const tweetAge = convertDate(Date.now() - tweetData.created_at);
+  $footer.append($("<p>").addClass("tweet-age").html(tweetAge));
 
   $footer.append($("<i>").addClass("icon fa fa-retweet").attr('aria-hidden', "true"));
   $footer.append($("<i>").addClass("icon fa fa-flag").attr('aria-hidden', "true"));
@@ -79,16 +34,73 @@ const createTweetElement = function (tweetData) {
   return $tweet;
 };
 
+  const renderTweets = function (tweets) {
+    for (i = 0; i < tweets.length; i++){
+      $('#tweets-container').append(createTweetElement(tweets[i]));
+    }
+  };
 
-const renderTweets = function (tweets) {
-  for (i = 0; i < tweets.length; i++){
-    $('#tweets-container').append(createTweetElement(tweets[i]));
+  //renderTweets(data);
+
+  $('#tweet-form').submit(function(){
+    event.preventDefault();
+    // console.log('serialize', $(this).serialize().length);
+    // console.log('val', $(this).val())
+
+    if ($(this).serialize().length < 6) {
+
+      alert("Can't have empty tweet");
+
+    } if ($(this).serialize().length > 145){
+
+      alert("Can't have tweet longer than 140 characters");
+
+    } else {
+
+    $.post(
+     "/tweets",
+     $(this).serialize(),
+     function(data){
+    });
+
+    }
+  });
+
+  const loadTweets = function() {
+    $.ajax({
+      url: '/tweets',
+      method: 'GET',
+      success: renderTweets
+    });
   }
-};
+  loadTweets();
 
-$(document).ready(function(){
-  //var $tweet = createTweetElement(tweetData);
-  //console.log($tweet);
-  // $('#tweets-container').append($tweet);
-  renderTweets(data);
+  const convertDate = function (date) {
+    date /= 1000;
+    // calculate (and subtract) whole days
+    if (date > 86400) {
+      var days = Math.floor(date / 86400);
+      date -= days * 86400;
+      return days + " days ago";
+    }
+
+    // calculate (and subtract) whole hours
+    if (date > 3600) {
+      var hours = Math.floor(date / 3600) % 24;
+      date -= hours * 3600;
+      return hours + " hours ago";
+    }
+
+    // calculate (and subtract) whole minutes
+    if (date > 60) {
+      var minutes = Math.floor(date / 60) % 60;
+      date -= minutes * 60;
+      return minutes + " minutes ago";
+    }
+
+    // what's left is seconds
+    var seconds = Math.floor(date % 60);  // in theory the modulus is not required
+    return seconds + " seconds ago";
+  }
+
 })
