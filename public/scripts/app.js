@@ -63,6 +63,8 @@ $(document).ready(function(){
      function(data){
     });
 
+    loadTweets();
+
     }
   });
 
@@ -74,6 +76,14 @@ $(document).ready(function(){
     });
   }
   loadTweets();
+
+  $("#compose-button").click(function() {
+
+    $(".new-tweet").slideToggle( "slow");
+    $("#tweet-input").focus();
+
+});
+
 
   const convertDate = function (date) {
     date /= 1000;
