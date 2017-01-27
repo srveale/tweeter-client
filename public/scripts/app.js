@@ -2,8 +2,15 @@ $(document).ready(function(){
   $(".new-tweet").hide();
 
   const renderTweets = function (tweets) {
-    for (i = tweets.length - 1; i >= 0; i--){
-      $('#tweets-container').append(createTweetElement(tweets[i]));
+    if (tweets.length < 1) {
+      console.log('here')
+      $('#tweets-container').append($("<p>").html("There are no tweets yet! Why not compose the first one?"));
+    } else {
+
+      for (i = tweets.length - 1; i >= 0; i--){
+        $('#tweets-container').append(createTweetElement(tweets[i]));
+
+      }
     }
   };
 

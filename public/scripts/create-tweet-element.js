@@ -1,4 +1,5 @@
 const createTweetElement = function (tweetData) {
+
   $tweet = $("<article>").addClass("tweet");
 
   const $header = $("<header>").addClass("tweet-header")
