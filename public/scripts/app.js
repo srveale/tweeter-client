@@ -16,15 +16,18 @@ $(document).ready(function(){
   $('#tweet-form').submit(function(){
     event.preventDefault();
 
+
     if ($(this).serialize().length < 6) {
 
       alert("Can't have empty tweet");
 
-    } if ($(this).serialize().length > 145){
+    } else if ($(this).serialize().length > 145){
 
       alert("Can't have tweet longer than 140 characters");
 
     } else {
+
+    $('#tweets-container').empty();
 
     $.post(
      "/tweets",
