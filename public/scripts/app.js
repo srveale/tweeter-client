@@ -35,6 +35,8 @@ $(document).ready(function(){
     } else {
       $('#tweets-container').empty();
 
+
+
       $.post(
        "/tweets",
        $(this).serialize(),
