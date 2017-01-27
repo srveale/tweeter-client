@@ -17,9 +17,9 @@ const createTweetElement = function (tweetData) {
   const tweetAge = convertDate(Date.now() - tweetData.created_at);
   $footer.append($("<p>").addClass("tweet-age").html(tweetAge));
 
-  $footer.append($("<i>").addClass("icon fa fa-retweet").attr('aria-hidden', "true"));
-  $footer.append($("<i>").addClass("icon fa fa-flag").attr('aria-hidden', "true"));
-  $footer.append($("<i>").addClass("icon fa fa-heart").attr('aria-hidden', "true"));
+  $footer.append($("<i>").addClass("icon fa fa-retweet fa-lg").attr('aria-hidden', "true"));
+  $footer.append($("<i>").addClass("icon fa fa-flag fa-lg").attr('aria-hidden', "true"));
+  $footer.append($("<i>").addClass("icon fa fa-heart fa-lg").attr('aria-hidden', "true"));
 
   $tweet.append($footer);
 

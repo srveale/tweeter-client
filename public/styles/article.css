@@ -22,11 +22,13 @@
   float: right;
   color: #4CB8A8;
   margin-top: 0.9em;
+  margin-left: -0.3em;
+  margin-right: -0.7em;
 }
 
 .tweet-header h2 {
   float: left;
-  margin: 0;
+  margin-top: 0.45em;
 }
 
 .handle {
